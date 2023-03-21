@@ -6,6 +6,9 @@ pipeline {
     DOCKER_IMAGE_NAME=credentials('image-name')
     DOCKER_USER=credentials('docker-user')
     DOCKER_PASS=credentials('docker-pass')
+    K3S_USER=credentials('k3s-user')
+    K3S_PASS=credentials('k3s-pass')
+    K3S_HOST=credentials('k3s-host')
     }
 
     stages {
@@ -25,5 +28,15 @@ pipeline {
                sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER -f' 
             }
         }
+
+        stage('Deploy to k3s') {
+            steps {
+               sh 'sed -i "s+image: DOCKER_IMAGE_NAME:BUILD_NUMBER+image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER+g" ./Manifest.yaml' 
+               sh 'sshpass -p $K3S_PASS scp -r ./Manifest.yaml $K3S_USER@$K3S_HOST:/home/jenkins/'
+               sh 'sshpass -p $K3S_PASS ssh $K3S_USER@$K3S_HOST kubectl apply -f Manifest.yaml'
+               sh 'sshpass -p $K3S_PASS ssh $K3S_USER@$K3S_HOST rm Manifest.yaml'
+            }
+        }
     }
 }
+
