@@ -33,6 +33,7 @@ pipeline {
             steps {
                sh 'sed -i "s+image: DOCKER_IMAGE_NAME:BUILD_NUMBER+image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER+g" ./Manifest.yaml' 
                sh 'sshpass -p $K3S_PASS scp -r ./Manifest.yaml $K3S_USER@$K3S_HOST:/home/jenkins/'
+               sh 'sshpass -p $K3S_PASS ssh $K3S_USER@$K3S_HOST kubectl delete deploy php-nginx -n web'
                sh 'sshpass -p $K3S_PASS ssh $K3S_USER@$K3S_HOST kubectl apply -f Manifest.yaml'
                sh 'sshpass -p $K3S_PASS ssh $K3S_USER@$K3S_HOST rm Manifest.yaml'
             }
