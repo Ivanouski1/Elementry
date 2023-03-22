@@ -18,7 +18,7 @@ pipeline {
 
             steps {
                 script {
-                    sh 'echo env'
+                    sh 'env'
                     if (env.BRANCH_NAME == 'develop') {  
                        sh 'docker build -t $DOCKER_IMAGE_NAME:$BUILD_NUMBER . --no-cache' 
                     } else {
