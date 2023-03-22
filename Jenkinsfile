@@ -14,7 +14,7 @@ pipeline {
     stages {
         
 
-        stage('Build image') {
+        stage('Build image develop') {
             when {
                 branch 'develop'
             }
@@ -23,7 +23,7 @@ pipeline {
             }
         }
 
-        stage('Build image') {
+        stage('Build image main') {
             when {
                 branch 'main'
             }
@@ -32,7 +32,7 @@ pipeline {
             }
         }
 
-        stage('DockerHub push') {
+        stage('DockerHub push develop') {
             when {
                 branch 'develop'
             }
@@ -43,7 +43,7 @@ pipeline {
             }
         }
 
-        stage('DockerHub push') {
+        stage('DockerHub push main') {
             when {
                 branch 'main'
             }
@@ -54,7 +54,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to k3s') {
+        stage('Deploy to k3s develop') {
             when {
                 branch 'develop'
             }
@@ -67,7 +67,7 @@ pipeline {
             }
         }
 
-        stage('Deploy to k3s') {
+        stage('Deploy to k3s main') {
             when {
                 branch 'main'
             }
