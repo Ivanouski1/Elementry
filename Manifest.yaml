@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: php-nginx
+  namespace: web
+  labels:
+    app: php-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: php-nginx
+  template:
+    metadata:
+      labels:
+        app: php-nginx
+    spec:
+      containers:
+      - name: php-nginx-alpine
+        image: DOCKER_IMAGE_NAME:BUILD_NUMBER
+        ports:
+        - containerPort: 80
+        - containerPort: 443
