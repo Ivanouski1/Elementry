@@ -1,10 +1,6 @@
 FROM alpine:3.14
 
-RUN apk update && apk upgrade
-RUN apk add bash
-RUN apk add nginx
-RUN apk add php8 php8-fpm php8-opcache
-RUN apk add php8-gd php8-zlib php8-curl
+RUN apk update && apk upgrade && apk add bash && apk add nginx && apk add php8 php8-fpm php8-opcache && apk add php8-gd php8-zlib php8-curl
 
 COPY server/etc/nginx /etc/nginx
 COPY server/etc/php /etc/php8
