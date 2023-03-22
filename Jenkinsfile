@@ -19,7 +19,7 @@ pipeline {
             steps {
                 script {
                     sh 'env'
-                    if (env.BRANCH_NAME == 'develop') {  
+                    if (env.GIT_BRANCH == 'origin/develop') {  
                        sh 'docker build -t $DOCKER_IMAGE_NAME:$BUILD_NUMBER . --no-cache' 
                     } else {
                        sh 'docker build -t $DOCKER_IMAGE_NAME:prod-$BUILD_NUMBER . --no-cache' 
@@ -33,7 +33,7 @@ pipeline {
 
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'develop') {  
+                    if (env.GIT_BRANCH == 'origin/develop') {  
                        sh 'docker login --username=$DOCKER_USER --password=$DOCKER_PASS' 
                        sh 'docker push $DOCKER_IMAGE_NAME:$BUILD_NUMBER' 
                        sh 'docker rmi $DOCKER_IMAGE_NAME:$BUILD_NUMBER -f'
@@ -51,7 +51,7 @@ pipeline {
 
             steps {
                 script {
-                    if (env.BRANCH_NAME == 'develop') {       
+                    if (env.GIT_BRANCH == 'origin/develop') {       
                        sh 'sed -i "s+image: DOCKER_IMAGE_NAME:BUILD_NUMBER+image: $DOCKER_IMAGE_NAME:$BUILD_NUMBER+g" ./Manifest.yaml' 
                        sh 'sshpass -p $K3S_PASS scp -r ./Manifest.yaml $K3S_USER@$K3S_HOST:/home/jenkins/'
                        sh 'sshpass -p $K3S_PASS ssh $K3S_USER@$K3S_HOST kubectl delete deploy php-nginx -n web'
